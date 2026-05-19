@@ -2,7 +2,7 @@ name: CI - dockee-backend
 
 on:
   push:
-    branches: [dev, 'feature/**']
+    branches: [main, dev]
   pull_request:
     branches: [main, dev]
 
@@ -16,20 +16,11 @@ jobs:
         with:
           go-version: '1.24'
 
-      - name: Create minimal Go module
-        run: |
-          go mod init github.com/dockee/backend
-          cat > main.go << 'EOF'
-          package main
-          import "fmt"
-          func main() { fmt.Println("Dockee backend") }
-          EOF
-
       - name: Run go vet
         run: go vet ./...
 
       - name: Run tests
-        run: go test ./... -v
+        run: go test ./...
 
       - name: Build binary
         run: go build -o dockee-backend ./...
